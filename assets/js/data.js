@@ -2,29 +2,34 @@ const DEFAULT_CMS_DATA = {
   "site": {
     "brandName": "إلهام الحسين",
     "navBranding": "الهويات",
-    "navCarousels": "الكاروسيلات",
+    "navCarousels": "أعمال بصرية",
     "navAbout": "عنّي",
     "navContact": "تواصل",
-    "role": "مصممة بصرية ومديرة فنية",
+    "role": "مصمم بصري ومدير فني",
     "hero1": "أصنع",
-    "hero2": "حضورًا",
-    "hero3": "يُتذكّر.",
-    "heroDescription": "أحوّل الأفكار إلى أنظمة بصرية واضحة ومؤثّرة؛ هويات تمنح العلامات شخصية، ومحتوى تحريري يجعل القصص تستحق التوقّف عندها.",
+    "hero2": "فكرةً",
+    "hero3": "تُرى.",
+    "heroDescription": "أحوّل الفكرة إلى حضور بصري واضح؛ هوية تُعرف، ومحتوى يمسك الانتباه، وتصميم له سبب قبل ما يكون له شكل.",
     "heroTag1": "هويات بصرية",
     "heroTag2": "كاروسيلات",
-    "brandingTitle": "هويات بصرية\nتتجاوز حدود الشعار.",
-    "brandingText": "من الاستراتيجية والفكرة إلى أدقّ التطبيقات؛ أبني نظامًا متماسكًا يجعل العلامة واضحة، مميّزة، وقابلة للنمو.",
-    "carouselTitle": "سرد بصري\nيستحق المتابعة.",
-    "carouselText": "أحوّل الموضوع المعقّد إلى تجربة تحريرية واضحة؛ تعمل فيها الصورة والنص والإيقاع معًا لإبقاء القارئ حتى الشريحة الأخيرة.",
-    "aboutTitle": "كل قرار بصري\nله سبب.",
-    "aboutText": "أبدأ من جوهر الفكرة، سياقها، وجمهورها. ثم أبني حولها نظامًا من الصورة والخط واللون والحركة، بحيث يخدم كل عنصر الرسالة ويقوّي حضورها.",
-    "service1": "استراتيجية وهوية بصرية",
-    "service2": "تصميم تحريري وسرد بصري",
-    "service3": "إدارة فنية وتطوير مفاهيم",
-    "contactTitle": "مشروعك يستحق\nحضورًا أقوى.",
-    "contactText": "إذا كنت تبني علامة جديدة أو تبحث عن طريقة أوضح لسرد فكرتك، يسعدني أن نتعاون على تجربة بصرية تترك أثرًا حقيقيًا.",
-    "contactButton": "ابدأ مشروعك",
-    "contactEmail": "hello@example.com"
+    "brandingTitle": "هويات بصرية\nتعيش أبعد من الشعار.",
+    "brandingText": "أبني نظاماً بصرياً متماسكاً يبدأ من الفكرة ويظل واضحاً في كل نقطة يلتقي فيها الناس مع العلامة.",
+    "carouselTitle": "أعمال بصرية",
+    "carouselText": "كاروسيلات وإعلانات؛ أغلفة واضحة، وكل مشروع يفتح على تفاصيله كاملة.",
+    "aboutTitle": "التصميم عندي\nقرار قبل ما يكون شكل.",
+    "aboutText": "أبدأ بالسؤال: شو لازم يوصل أولاً؟ بعدها أبني التكوين والخط واللون والصورة والحركة حول الفكرة، حتى يطلع العمل واضحاً ومتماسكاً وله شخصية.",
+    "service1": "هوية بصرية",
+    "service2": "تصميم تحريري وكاروسيلات",
+    "service3": "إدارة فنية",
+    "contactTitle": "عندك فكرة\nبدها حضور؟",
+    "contactText": "احكيلي عن المشروع. إذا الفكرة تستحق الانتباه، بنبني لها حضور بصري يخلي الناس توقف عندها وتتذكرها.",
+    "contactButton": "خلينا نحكي",
+    "contactEmail": "hello@example.com",
+    "seoTitle": "إلهام الحسين | مصمم بصري ومدير فني",
+    "seoDescription": "معرض أعمال مصمم بصري ومدير فني متخصص في الهويات البصرية، التصميم التحريري، الإعلانات، الدمج البصري، الكاروسيلات ومحتوى السوشال ميديا.",
+    "siteUrl": "https://alhusseinelham7-lgtm.github.io/portfolio/",
+    "ownerName": "إلهام الحسين",
+    "gaMeasurementId": ""
   },
   "projects": [
     {
@@ -66,7 +71,9 @@ const DEFAULT_CMS_DATA = {
         "assets/images/wakilak/page-13.webp",
         "assets/images/wakilak/page-14.webp",
         "assets/images/wakilak/page-15.webp"
-      ]
+      ],
+      "section": "branding",
+      "workType": "هوية بصرية"
     },
     {
       "id": "tel-zaatar",
@@ -98,7 +105,9 @@ const DEFAULT_CMS_DATA = {
         "assets/images/tel-zaatar/slide-04.webp",
         "assets/images/tel-zaatar/slide-05.webp",
         "assets/images/tel-zaatar/slide-06.webp"
-      ]
+      ],
+      "section": "visual",
+      "workType": "كاروسيلات"
     },
     {
       "id": "davutoglu",
@@ -130,7 +139,9 @@ const DEFAULT_CMS_DATA = {
         "assets/images/davutoglu/slide-04.webp",
         "assets/images/davutoglu/slide-05.webp",
         "assets/images/davutoglu/slide-06.webp"
-      ]
+      ],
+      "section": "visual",
+      "workType": "كاروسيلات"
     },
     {
       "id": "singapore",
@@ -164,7 +175,9 @@ const DEFAULT_CMS_DATA = {
         "assets/images/singapore/slide-06.webp",
         "assets/images/singapore/slide-07.webp",
         "assets/images/singapore/slide-08.webp"
-      ]
+      ],
+      "section": "visual",
+      "workType": "كاروسيلات"
     },
     {
       "id": "soldier-phone",
@@ -195,7 +208,9 @@ const DEFAULT_CMS_DATA = {
         "assets/images/soldier-phone/slide-03.webp",
         "assets/images/soldier-phone/slide-04.webp",
         "assets/images/soldier-phone/slide-05.webp"
-      ]
+      ],
+      "section": "visual",
+      "workType": "كاروسيلات"
     },
     {
       "id": "trilateral",
@@ -227,7 +242,9 @@ const DEFAULT_CMS_DATA = {
         "assets/images/trilateral/slide-04.webp",
         "assets/images/trilateral/slide-05.webp",
         "assets/images/trilateral/slide-06.webp"
-      ]
+      ],
+      "section": "visual",
+      "workType": "كاروسيلات"
     },
     {
       "id": "killing",
@@ -257,22 +274,171 @@ const DEFAULT_CMS_DATA = {
         "assets/images/killing/slide-02.webp",
         "assets/images/killing/slide-03.webp",
         "assets/images/killing/slide-04.webp"
-      ]
+      ],
+      "section": "visual",
+      "workType": "كاروسيلات"
     }
   ]
 };
-function getCMS(){
-  try{
-    const saved=localStorage.getItem('portfolio_final_cms');
-    if(saved){
-      const parsed=JSON.parse(saved);
+
+let __supabaseClient = null;
+
+function supabaseEnabled() {
+  const c = window.PORTFOLIO_SUPABASE || {};
+  return Boolean(c.enabled && c.url && c.anonKey && window.supabase);
+}
+
+function getSupabase() {
+  if (!supabaseEnabled()) return null;
+  if (!__supabaseClient) {
+    const c = window.PORTFOLIO_SUPABASE;
+    __supabaseClient = window.supabase.createClient(c.url, c.anonKey, {
+      auth: { persistSession: true, autoRefreshToken: true }
+    });
+  }
+  return __supabaseClient;
+}
+
+function localCMS() {
+  try {
+    const raw = localStorage.getItem("portfolio_final_cms_v4");
+    if (raw) {
+      const parsed = JSON.parse(raw);
       return {
-        site:{...DEFAULT_CMS_DATA.site,...(parsed.site||{})},
-        projects:Array.isArray(parsed.projects)?parsed.projects:DEFAULT_CMS_DATA.projects
+        site: {...DEFAULT_CMS_DATA.site, ...(parsed.site || {})},
+        projects: Array.isArray(parsed.projects) ? parsed.projects : DEFAULT_CMS_DATA.projects
       };
     }
-  }catch(e){}
+  } catch(e) {}
   return structuredClone(DEFAULT_CMS_DATA);
 }
-function saveCMS(data){localStorage.setItem('portfolio_final_cms',JSON.stringify(data));}
-function resetCMS(){localStorage.removeItem('portfolio_final_cms');location.reload();}
+
+function saveLocalCMS(data) {
+  localStorage.setItem("portfolio_final_cms_v4", JSON.stringify(data));
+}
+
+async function loadCMS({ publicOnly = true } = {}) {
+  const sb = getSupabase();
+  if (!sb) return localCMS();
+
+  try {
+    const query = sb
+      .from("projects")
+      .select("id,title,kind,year,short,services,cover_url,images,published,sort_order,created_at,updated_at")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+
+    // Never let a slow network freeze the whole portfolio.
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Supabase request timeout")), 5000)
+    );
+
+    const projectRes = await Promise.race([query, timeout]);
+    if (projectRes.error) throw projectRes.error;
+
+    const remoteProjects = (projectRes.data || [])
+      .filter(r => publicOnly ? r.published !== false : true)
+      .map(r => {
+        const kind = r.kind || "carousel";
+        const isBranding = kind === "branding";
+        const isAds = kind === "ads" || kind === "advertising";
+
+        return {
+          id: r.slug || r.id,
+          dbId: r.id,
+          slug: r.slug || "",
+          title: r.title || "مشروع بدون عنوان",
+          type: isBranding ? "branding" : "carousel",
+          category: isBranding ? "هوية بصرية" : (isAds ? "إعلان" : "كاروسيل"),
+          year: r.year || "",
+          cover: r.cover_url || (Array.isArray(r.images) ? r.images[0] : "") || "",
+          eyebrow: isBranding ? "هوية بصرية" : (isAds ? "إعلان بصري" : "تصميم تحريري / كاروسيل"),
+          short: r.short || "",
+          intro: r.short || "",
+          role: r.services || (isBranding ? "Brand Identity / Art Direction" : "Art Direction / Visual Design"),
+          services: r.services || "",
+          featured: false,
+          published: r.published !== false,
+          order: Number(r.sort_order ?? 99),
+          sections: [],
+          images: Array.isArray(r.images) ? r.images : [],
+          section: isBranding ? "branding" : "visual",
+          workType: isBranding ? "هوية بصرية" : (isAds ? "إعلانات" : "كاروسيلات"),
+          remote: true
+        };
+      });
+
+    // Keep bundled projects and merge live Supabase projects over them.
+    const merged = new Map();
+    for (const p of DEFAULT_CMS_DATA.projects) {
+      if (!publicOnly || p.published !== false) merged.set(String(p.id), p);
+    }
+    for (const p of remoteProjects) merged.set(String(p.id), p);
+
+    let liveSite={};
+    try {
+      const siteQuery = sb.from("site_settings").select("content").eq("id",1).maybeSingle();
+      const siteTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("site settings timeout")), 3500));
+      const siteRes = await Promise.race([siteQuery, siteTimeout]);
+      if (!siteRes.error && siteRes.data?.content && typeof siteRes.data.content === "object") {
+        liveSite = siteRes.data.content;
+      }
+    } catch (siteErr) {
+      console.warn("Site settings unavailable; using defaults.", siteErr);
+    }
+
+    return {
+      site: {...DEFAULT_CMS_DATA.site, ...liveSite},
+      projects: [...merged.values()].sort((a,b)=>(a.order ?? 99)-(b.order ?? 99))
+    };
+  } catch (err) {
+    console.warn("Supabase unavailable; using bundled content.", err);
+    return localCMS();
+  }
+}
+
+async function saveSiteRemote(site) {
+  // Site settings are not connected yet.
+  saveLocalCMS({ ...localCMS(), site });
+}
+
+async function saveProjectRemote(project) {
+  const sb = getSupabase();
+  if (!sb) throw new Error("Supabase غير مفعّل");
+
+  const kind =
+    project.type === "branding" ? "branding" :
+    project.workType === "إعلانات" ? "ads" : "carousel";
+
+  const row = {
+    id: project.id,
+    title: project.title || "مشروع بدون عنوان",
+    kind,
+    year: String(project.year || ""),
+    short: project.short || project.intro || "",
+    services: project.services || project.role || "",
+    cover_url: project.cover || (project.images || [])[0] || "",
+    images: Array.isArray(project.images) ? project.images : [],
+    published: project.published !== false,
+    sort_order: Number(project.order ?? 99),
+    updated_at: new Date().toISOString()
+  };
+
+  const { error } = await sb.from("projects").upsert(row);
+  if (error) throw error;
+}
+
+async function deleteProjectRemote(id) {
+  const sb = getSupabase();
+  if (!sb) throw new Error("Supabase غير مفعّل");
+  const { error } = await sb.from("projects").delete().eq("id", id);
+  if (error) throw error;
+}
+
+function slugifyArabicTitle(input) {
+  const latin = (input || "").trim().toLowerCase()
+    .replace(/[^a-z0-9\u0600-\u06ff\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+  return latin || ("project-" + Date.now());
+}

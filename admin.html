@@ -1,1 +1,960 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>لوحة إدارة البورتفوليو</title><link rel="stylesheet" href="assets/css/style.css"></head><body class="admin-body"><div class="admin-shell"><aside class="admin-sidebar"><div class="admin-logo">إدارة البورتفوليو</div><div class="admin-nav"><button class="active" data-tab="#sitePanel">نصوص الموقع</button><button data-tab="#projectsPanel">المشاريع</button><a href="index.html">عرض الموقع ↗</a></div></aside><main class="admin-main"><div class="admin-head"><div><h1>عدّل كل شيء من هون</h1><p>النصوص، المشاريع، الصور، ترتيبها، وأقسام صفحة المشروع.</p></div><button class="btn danger" onclick="resetAll()">إعادة ضبط</button></div><section id="sitePanel" class="admin-panel active"><div class="panel"><div class="panel-title"><h2>كل نصوص الموقع</h2></div><form id="siteForm" class="form-grid"><div class="field"><label>اسم الموقع</label><input name="brandName"></div><div class="field"><label>المسمى المهني</label><input name="role"></div><div class="field"><label>Hero — السطر الأول</label><input name="hero1"></div><div class="field"><label>Hero — السطر الأحمر</label><input name="hero2"></div><div class="field"><label>Hero — السطر الثالث</label><input name="hero3"></div><div class="field full"><label>وصف الـHero</label><textarea name="heroDescription"></textarea></div><div class="field"><label>وسم 1</label><input name="heroTag1"></div><div class="field"><label>وسم 2</label><input name="heroTag2"></div><div class="field full"><label>عنوان قسم الهويات</label><input name="brandingTitle"></div><div class="field full"><label>نص قسم الهويات</label><textarea name="brandingText"></textarea></div><div class="field full"><label>عنوان قسم الكاروسيلات</label><input name="carouselTitle"></div><div class="field full"><label>نص قسم الكاروسيلات</label><textarea name="carouselText"></textarea></div><div class="field full"><label>عنوان عنّي</label><input name="aboutTitle"></div><div class="field full"><label>نص عنّي</label><textarea name="aboutText"></textarea></div><div class="field"><label>الخدمة 1</label><input name="service1"></div><div class="field"><label>الخدمة 2</label><input name="service2"></div><div class="field"><label>الخدمة 3</label><input name="service3"></div><div class="field full"><label>عنوان التواصل</label><input name="contactTitle"></div><div class="field full"><label>نص التواصل</label><textarea name="contactText"></textarea></div><div class="field"><label>نص الزر</label><input name="contactButton"></div><div class="field"><label>الإيميل</label><input name="contactEmail"></div><div class="field full"><button class="btn" type="submit">حفظ النصوص</button></div></form></div></section><section id="projectsPanel" class="admin-panel"><div class="panel"><div class="panel-title"><h2>المشاريع</h2><button class="btn" onclick="openModal()">+ مشروع جديد</button></div><div style="overflow:auto"><table class="admin-table"><thead><tr><th>المشروع</th><th>النوع</th><th>التصنيف</th><th>السنة</th><th>الترتيب</th><th>الحالة</th><th></th></tr></thead><tbody id="projectRows"></tbody></table></div></div></section></main></div><div class="modal" id="projectModal"><div class="modal-card"><div class="modal-top"><h2>تحرير المشروع</h2><button class="close-modal" onclick="closeModal()">×</button></div><form id="projectForm" class="form-grid"><input type="hidden" name="originalId"><div class="field"><label>ID إنجليزي</label><input required name="id" placeholder="my-project"></div><div class="field"><label>اسم المشروع</label><input required name="title"></div><div class="field"><label>النوع</label><select name="type"><option value="branding">هوية بصرية</option><option value="carousel">كاروسيل</option></select></div><div class="field"><label>التصنيف الظاهر</label><input name="category"></div><div class="field"><label>السنة</label><input name="year"></div><div class="field"><label>الترتيب</label><input type="number" name="order"></div><div class="field full"><label>مسار الغلاف</label><input name="cover" placeholder="assets/images/..."></div><div class="field full"><label>السطر الصغير فوق العنوان</label><input name="eyebrow"></div><div class="field full"><label>وصف مختصر للقوائم</label><textarea name="short"></textarea></div><div class="field full"><label>مقدمة صفحة المشروع</label><textarea name="intro"></textarea></div><div class="field"><label>الدور</label><input name="role"></div><div class="field"><label>الخدمات</label><input name="services"></div><div class="field full"><label>مسارات الصور — كل صورة بسطر</label><textarea name="images" style="min-height:180px"></textarea></div><div class="field full"><label>أقسام المشروع بصيغة JSON</label><textarea name="sections" style="min-height:260px"></textarea></div><div class="field"><label><input type="checkbox" name="published"> منشور</label></div><div class="field"><label><input type="checkbox" name="featured"> مميز</label></div><div class="field full"><button class="btn" type="submit">حفظ المشروع</button></div></form></div></div><script src="assets/js/data.js"></script><script src="assets/js/admin.js"></script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>إدارة البورتفوليو — إلهام الحسين</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+
+:root{
+  --a-bg:#0b0b0b;
+  --a-panel:#111;
+  --a-panel-2:#151515;
+  --a-line:#252525;
+  --a-muted:#777;
+  --a-text:#f3f1eb;
+  --a-red:#f21b24;
+  --a-radius:18px;
+}
+*{box-sizing:border-box}
+.admin-v1-body{margin:0;background:var(--a-bg);color:var(--a-text);font-family:"NeoSansArabic","NeoSans",Arial,sans-serif!important;min-height:100vh}
+.admin-v1-body button,.admin-v1-body input,.admin-v1-body textarea,.admin-v1-body select{font:inherit}
+.admin-app{min-height:100vh;display:grid;grid-template-columns:280px minmax(0,1fr)}
+.admin-side{height:100vh;position:sticky;top:0;border-left:1px solid var(--a-line);padding:28px 20px;display:flex;flex-direction:column;justify-content:space-between;background:#0d0d0d}
+.admin-brand{display:inline-flex;align-items:center;gap:9px;color:white;text-decoration:none;font-weight:900;font-size:20px}
+.admin-brand-dot{width:8px;height:8px;background:var(--a-red);border-radius:50%;display:inline-block}
+.admin-side-note{font-size:11px;color:#666;margin-top:8px}
+.admin-tabs{display:grid;gap:4px;margin-top:42px}
+.admin-tab{border:0;background:transparent;color:#777;display:flex;justify-content:space-between;align-items:center;padding:14px 12px;border-radius:10px;cursor:pointer;text-align:right}
+.admin-tab:hover{background:#141414;color:white}
+.admin-tab.active{background:#191919;color:white}
+.admin-tab small{font-size:10px;color:#555}
+.admin-side-bottom{display:grid;gap:12px}
+.admin-local-status{font-size:10px;color:#777;display:flex;align-items:center;gap:7px}
+.admin-local-status span{width:7px;height:7px;border-radius:50%;background:#ffb000}
+.admin-view-site{font-size:12px;color:#fff;text-decoration:none}
+.admin-main-v1{padding:38px 42px 70px;min-width:0}
+.admin-mobile-head{display:none}
+.admin-screen{display:none}.admin-screen.active{display:block}
+.admin-page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:34px}
+.admin-kicker{font-size:10px;color:#666;letter-spacing:.12em}
+.admin-page-head h1{font-size:clamp(50px,6vw,95px);line-height:.88;letter-spacing:-.05em;margin:12px 0 16px}
+.admin-page-head p{margin:0;color:#888;max-width:600px;font-size:15px;line-height:1.8}
+.admin-primary,.admin-secondary{border:0;border-radius:999px;padding:12px 17px;cursor:pointer}
+.admin-primary{background:var(--a-red);color:white}
+.admin-secondary{background:#1c1c1c;color:#ddd;border:1px solid #303030}
+.admin-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px}
+.admin-stat-grid article{border:1px solid var(--a-line);border-radius:14px;padding:18px;background:#0f0f0f}
+.admin-stat-grid strong{display:block;font-size:34px;line-height:1;margin-bottom:8px}
+.admin-stat-grid span{font-size:11px;color:#777}
+.admin-project-toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:24px 0}
+.admin-search-wrap{flex:1;max-width:420px}
+.admin-search-wrap input{width:100%;background:#111;border:1px solid var(--a-line);border-radius:999px;color:white;padding:11px 15px;outline:none}
+.admin-filter-row{display:flex;gap:7px;flex-wrap:wrap}
+.admin-filter-row button{border:1px solid #303030;background:#111;color:#888;border-radius:999px;padding:8px 12px;cursor:pointer;font-size:11px}
+.admin-filter-row button.active{background:white;color:#111;border-color:white}
+.admin-project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.admin-project-card{border:1px solid var(--a-line);background:#101010;border-radius:14px;overflow:hidden}
+.admin-project-cover{aspect-ratio:4/3;background:#181818;position:relative;overflow:hidden}
+.admin-project-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.admin-project-badge{position:absolute;right:10px;top:10px;background:rgba(0,0,0,.72);color:white;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:5px 8px;font-size:9px}
+.admin-project-info{padding:14px}
+.admin-project-info h3{margin:0 0 5px;font-size:18px}
+.admin-project-info p{margin:0;color:#666;font-size:10px}
+.admin-project-actions{display:flex;gap:7px;margin-top:14px}
+.admin-project-actions button{flex:1;border:1px solid #2b2b2b;background:#151515;color:#bbb;border-radius:9px;padding:8px;cursor:pointer;font-size:10px}
+.admin-project-actions .delete{color:#ff7a80}
+.admin-empty{border:1px dashed #292929;border-radius:16px;padding:35px;text-align:center;color:#666}
+.admin-content-form{display:grid;gap:14px}
+.admin-form-card,.admin-analytics-card{border:1px solid var(--a-line);background:#101010;border-radius:var(--a-radius);padding:22px}
+.admin-form-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.admin-form-card-head h2{margin:0;font-size:21px}.admin-form-card-head span{font-size:10px;color:#555}
+.admin-fields-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-fields-grid.one{grid-template-columns:1fr}
+.admin-fields-grid label,.admin-creator-fields label{display:grid;gap:7px}
+.admin-fields-grid label span,.admin-creator-fields label span{font-size:10px;color:#777}
+.admin-fields-grid input,.admin-fields-grid textarea,.admin-creator-fields input,.admin-creator-fields textarea,.admin-creator-fields select{
+  width:100%;background:#0c0c0c;border:1px solid #2a2a2a;color:#eee;border-radius:10px;padding:11px 12px;outline:none
+}
+.admin-fields-grid textarea,.admin-creator-fields textarea{min-height:110px;resize:vertical;line-height:1.7}
+.admin-fields-grid .full{grid-column:1/-1}
+.admin-form-actions{display:flex;justify-content:flex-start;margin-top:18px}
+.admin-seo-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px}
+.admin-coming{min-height:280px;display:grid;place-items:center;text-align:center;align-content:center}
+.admin-coming strong{font-size:70px}.admin-coming span{font-size:13px}.admin-coming p{color:#666;font-size:11px;line-height:1.7;max-width:240px}
+.admin-modal{position:fixed;inset:0;z-index:2000;display:none}
+.admin-modal.open{display:block}
+.admin-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px)}
+.admin-modal-sheet{position:absolute;inset:24px;max-width:1280px;margin:auto;background:#0e0e0e;border:1px solid #272727;border-radius:22px;padding:25px;overflow:auto}
+.admin-modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}
+.admin-modal-head h2{font-size:40px;margin:7px 0 0}
+.admin-close{width:42px;height:42px;border-radius:50%;border:1px solid #2c2c2c;background:#141414;color:white;font-size:24px;cursor:pointer}
+.admin-creator-grid{display:grid;grid-template-columns:360px minmax(0,1fr);gap:24px}
+.admin-creator-fields{display:grid;gap:14px;align-content:start}
+.admin-switch-row{display:flex!important;align-items:center;gap:9px!important}
+.admin-switch-row input{width:auto!important}
+.admin-upload-column{min-width:0}
+.admin-dropzone{min-height:230px;border:1px dashed #3a3a3a;border-radius:18px;background:#111;display:grid;place-items:center;text-align:center;padding:25px;cursor:pointer}
+.admin-dropzone.dragover{border-color:var(--a-red);background:#160e0f}
+.admin-dropzone input{display:none}
+.drop-icon{font-size:34px;margin-bottom:5px}
+.admin-dropzone strong{font-size:18px}.admin-dropzone span{font-size:11px;color:#888}.admin-dropzone small{font-size:9px;color:#555}
+.admin-upload-meta{display:flex;justify-content:space-between;color:#666;font-size:9px;margin:12px 2px}
+.admin-image-sort{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.admin-sort-item{position:relative;aspect-ratio:4/5;border:1px solid #2b2b2b;background:#161616;border-radius:10px;overflow:hidden;cursor:grab}
+.admin-sort-item.dragging{opacity:.4}
+.admin-sort-item img{width:100%;height:100%;object-fit:cover}
+.admin-sort-tools{position:absolute;inset:auto 6px 6px 6px;display:flex;gap:5px}
+.admin-sort-tools button{border:0;background:rgba(0,0,0,.72);color:white;padding:5px 7px;border-radius:7px;font-size:8px;cursor:pointer}
+.admin-sort-item.cover{outline:2px solid var(--a-red)}
+.admin-cover-label{position:absolute;top:7px;right:7px;background:var(--a-red);color:white;border-radius:999px;padding:4px 6px;font-size:8px}
+.admin-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:24px;padding-top:18px;border-top:1px solid #222}
+.admin-toast-v1{position:fixed;left:25px;bottom:25px;background:#fff;color:#111;border-radius:10px;padding:11px 14px;font-size:11px;z-index:3000;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}
+.admin-toast-v1.show{opacity:1;transform:none}
+@media(max-width:1100px){
+  .admin-app{grid-template-columns:220px minmax(0,1fr)}
+  .admin-main-v1{padding:30px 25px 60px}
+  .admin-project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .admin-stat-grid{grid-template-columns:repeat(2,1fr)}
+  .admin-creator-grid{grid-template-columns:310px minmax(0,1fr)}
+  .admin-image-sort{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .admin-seo-layout{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .admin-app{display:block}
+  .admin-side{position:fixed;z-index:1500;top:0;right:0;width:min(86vw,320px);height:100vh;transform:translateX(105%);transition:.25s}
+  .admin-side.mobile-open{transform:none}
+  .admin-main-v1{padding:16px 14px 45px}
+  .admin-mobile-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+  .admin-mobile-menu{background:#161616;border:1px solid #292929;color:white;border-radius:999px;padding:8px 12px}
+  .admin-page-head{display:block}.admin-page-head .admin-primary{margin-top:20px}
+  .admin-page-head h1{font-size:58px}
+  .admin-stat-grid{grid-template-columns:repeat(2,1fr)}
+  .admin-project-toolbar{align-items:flex-start;flex-direction:column}.admin-search-wrap{max-width:none;width:100%}
+  .admin-project-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .admin-project-info{padding:10px}.admin-project-info h3{font-size:14px}
+  .admin-form-card{padding:15px}.admin-fields-grid{grid-template-columns:1fr}.admin-fields-grid .full{grid-column:auto}
+  .admin-modal-sheet{inset:8px;padding:15px;border-radius:16px}
+  .admin-creator-grid{grid-template-columns:1fr}
+  .admin-image-sort{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:460px){
+  .admin-project-grid{grid-template-columns:1fr}
+  .admin-stat-grid{gap:7px}.admin-stat-grid article{padding:14px}
+  .admin-image-sort{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+</style>
+</head>
+<body class="admin-v1-body">
+
+<div id="loginScreen" style="min-height:100vh;display:grid;place-items:center;background:#0b0b0b;color:#f3f1eb;padding:24px">
+  <form id="loginForm" style="width:min(92vw,430px);display:grid;gap:14px;border:1px solid #252525;background:#101010;border-radius:20px;padding:28px">
+    <div style="font-size:10px;color:#666;letter-spacing:.12em">PORTFOLIO CMS / LOGIN</div>
+    <h1 style="font-size:48px;line-height:.95;margin:4px 0 14px">دخول الإدارة.</h1>
+    <label style="display:grid;gap:7px">
+      <span style="font-size:11px;color:#777">الإيميل</span>
+      <input id="loginEmail" type="email" required autocomplete="email" style="width:100%;background:#0c0c0c;border:1px solid #2a2a2a;color:#eee;border-radius:10px;padding:12px">
+    </label>
+    <label style="display:grid;gap:7px">
+      <span style="font-size:11px;color:#777">كلمة المرور</span>
+      <input id="loginPassword" type="password" required autocomplete="current-password" style="width:100%;background:#0c0c0c;border:1px solid #2a2a2a;color:#eee;border-radius:10px;padding:12px">
+    </label>
+    <button id="loginSubmit" type="submit" class="admin-primary" style="margin-top:4px">دخول</button>
+    <p id="loginError" style="min-height:20px;margin:0;color:#ff7a80;font-size:11px"></p>
+  </form>
+</div>
+
+
+<div class="admin-app" id="adminApp" style="display:none">
+  <aside class="admin-side">
+    <div class="admin-side-top">
+      <a class="admin-brand" href="index.html">
+        <span class="admin-brand-dot"></span>
+        <span>إلهام الحسين</span>
+      </a>
+      <div class="admin-side-note">لوحة إدارة البورتفوليو</div>
+    </div>
+
+    <nav class="admin-tabs" aria-label="إدارة الموقع">
+      <button class="admin-tab active" data-panel="dashboardPanel">
+        <span>المشاريع</span><small>01</small>
+      </button>
+      <button class="admin-tab" data-panel="contentPanel">
+        <span>محتوى الموقع</span><small>02</small>
+      </button>
+      <button class="admin-tab" data-panel="seoPanel">
+        <span>SEO والإحصاءات</span><small>03</small>
+      </button>
+    </nav>
+
+    <div class="admin-side-bottom">
+      <div class="admin-local-status" id="dbStatus"><span style="background:#18c76f"></span> متصل بـ Supabase</div>
+      <a class="admin-view-site" href="index.html" target="_blank">عرض الموقع ↗</a>
+      <button class="admin-view-site" id="logoutBtn" type="button" style="background:none;border:0;padding:0;text-align:right;cursor:pointer;color:#ff7a80">تسجيل الخروج</button>
+    </div>
+  </aside>
+
+  <main class="admin-main-v1">
+    <header class="admin-mobile-head">
+      <a class="admin-brand" href="index.html">
+        <span class="admin-brand-dot"></span>
+        <span>إلهام الحسين</span>
+      </a>
+      <button class="admin-mobile-menu" id="adminMobileMenu">القائمة</button>
+    </header>
+
+    <section class="admin-screen active" id="dashboardPanel">
+      <div class="admin-page-head">
+        <div>
+          <div class="admin-kicker">PORTFOLIO CMS / 01</div>
+          <h1>المشاريع.</h1>
+          <p>ضيف العمل، رتّب الصور، وحدد الغلاف. الباقي علينا.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="admin-primary" id="openProjectCreator">+ إضافة مشروع</button><button class="admin-secondary" id="importLegacyProjects" type="button" style="display:none">استيراد المشاريع القديمة</button></div>
+      </div>
+
+      <div class="admin-stat-grid">
+        <article><strong id="statAll">0</strong><span>كل المشاريع</span></article>
+        <article><strong id="statBranding">0</strong><span>هويات بصرية</span></article>
+        <article><strong id="statCarousel">0</strong><span>كاروسيلات</span></article>
+        <article><strong id="statAds">0</strong><span>إعلانات</span></article>
+      </div>
+
+      <div class="admin-project-toolbar">
+        <div class="admin-search-wrap">
+          <input id="projectSearch" type="search" placeholder="ابحث عن مشروع...">
+        </div>
+        <div class="admin-filter-row" id="projectFilters">
+          <button class="active" data-filter="all">الكل</button>
+          <button data-filter="branding">هويات</button>
+          <button data-filter="carousel">كاروسيلات</button>
+          <button data-filter="ads">إعلانات</button>
+        </div>
+      </div>
+
+      <div class="admin-project-grid" id="adminProjectGrid"></div>
+      <div class="admin-empty" id="adminEmpty" hidden>ما في مشاريع بهالفلتر.</div>
+    </section>
+
+    <section class="admin-screen" id="contentPanel">
+      <div class="admin-page-head">
+        <div>
+          <div class="admin-kicker">SITE CONTENT / 02</div>
+          <h1>محتوى الموقع.</h1>
+          <p>كل النصوص الأساسية بمكان واحد، بدون ما ترجع للكود.</p>
+        </div>
+      </div>
+
+      <form class="admin-content-form" id="contentForm">
+        <section class="admin-form-card">
+          <div class="admin-form-card-head"><h2>الرئيسية</h2><span>Hero</span></div>
+          <div class="admin-fields-grid">
+            <label><span>الاسم</span><input name="brandName"></label>
+            <label><span>المسمى</span><input name="role"></label>
+            <label><span>السطر الأول</span><input name="hero1"></label>
+            <label><span>السطر الثاني</span><input name="hero2"></label>
+            <label><span>السطر الثالث</span><input name="hero3"></label>
+            <label class="full"><span>الوصف</span><textarea name="heroDescription"></textarea></label>
+          </div>
+        </section>
+
+        <section class="admin-form-card">
+          <div class="admin-form-card-head"><h2>الأقسام</h2><span>Sections</span></div>
+          <div class="admin-fields-grid">
+            <label><span>عنوان الهويات</span><input name="brandingTitle"></label>
+            <label><span>عنوان الأعمال البصرية</span><input name="carouselTitle"></label>
+            <label class="full"><span>نص الهويات</span><textarea name="brandingText"></textarea></label>
+            <label class="full"><span>نص الأعمال البصرية</span><textarea name="carouselText"></textarea></label>
+            <label><span>عنوان عنّي</span><input name="aboutTitle"></label>
+            <label class="full"><span>نص عنّي</span><textarea name="aboutText"></textarea></label>
+          </div>
+        </section>
+
+        <section class="admin-form-card">
+          <div class="admin-form-card-head"><h2>التواصل</h2><span>Contact</span></div>
+          <div class="admin-fields-grid">
+            <label><span>العنوان</span><input name="contactTitle"></label>
+            <label><span>الإيميل</span><input name="contactEmail" type="email"></label>
+            <label class="full"><span>النص</span><textarea name="contactText"></textarea></label>
+          </div>
+        </section>
+
+        <div class="admin-form-actions">
+          <button class="admin-primary" type="submit">حفظ النصوص</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-screen" id="seoPanel">
+      <div class="admin-page-head">
+        <div>
+          <div class="admin-kicker">SEO & ANALYTICS / 03</div>
+          <h1>الظهور والأرقام.</h1>
+          <p>جهّز الموقع لمحركات البحث، وبعد الربط منضيف الإحصاءات الحقيقية.</p>
+        </div>
+      </div>
+
+      <div class="admin-seo-layout">
+        <form class="admin-form-card" id="seoForm">
+          <div class="admin-form-card-head"><h2>إعدادات Google</h2><span>SEO</span></div>
+          <div class="admin-fields-grid one">
+            <label><span>عنوان الموقع</span><input name="seoTitle"></label>
+            <label><span>وصف نتائج البحث</span><textarea name="seoDescription"></textarea></label>
+            <label><span>رابط الموقع</span><input name="siteUrl" placeholder="https://..."></label>
+            <label><span>Google Analytics ID</span><input name="gaMeasurementId" placeholder="G-XXXXXXXXXX"></label>
+          </div>
+          <div class="admin-form-actions">
+            <button class="admin-primary" type="submit">حفظ إعدادات SEO</button>
+          </div>
+        </form>
+
+        <aside class="admin-analytics-card">
+          <div class="admin-form-card-head"><h2>الإحصاءات</h2><span>Analytics</span></div>
+          <div class="admin-coming">
+            <strong>—</strong>
+            <span>عدد الزوار</span>
+            <p>بيظهر هون بعد ما نربط Google Analytics / API بالمرحلة الجاية.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Add/Edit project modal -->
+<div class="admin-modal" id="projectCreator" aria-hidden="true">
+  <div class="admin-modal-backdrop" data-close-project></div>
+  <div class="admin-modal-sheet">
+    <div class="admin-modal-head">
+      <div>
+        <div class="admin-kicker">NEW PROJECT</div>
+        <h2 id="projectModalTitle">إضافة مشروع.</h2>
+      </div>
+      <button class="admin-close" data-close-project>×</button>
+    </div>
+
+    <form id="projectCreatorForm">
+      <input type="hidden" name="editingId">
+      <div class="admin-creator-grid">
+        <div class="admin-creator-fields">
+          <label><span>اسم المشروع</span><input name="title" required placeholder="مثال: تل الزعتر"></label>
+          <label><span>نوع العمل</span>
+            <select name="kind" required>
+              <option value="carousel">كاروسيل</option>
+              <option value="ads">إعلان</option>
+              <option value="branding">هوية بصرية</option>
+            </select>
+          </label>
+          <label><span>السنة</span><input name="year" value="2026"></label>
+          <label><span>وصف مختصر</span><textarea name="short" placeholder="سطر أو سطرين عن المشروع"></textarea></label>
+          <label><span>الدور / الخدمات</span><input name="services" placeholder="Art Direction / Visual Design"></label>
+          <label class="admin-switch-row">
+            <input type="checkbox" name="published" checked>
+            <span>نشر المشروع بالموقع</span>
+          </label>
+        </div>
+
+        <div class="admin-upload-column">
+          <label class="admin-dropzone" id="adminDropzone">
+            <input id="adminProjectFiles" type="file" accept="image/*" multiple>
+            <div class="drop-icon">＋</div>
+            <strong>اسحب الصور لهون</strong>
+            <span>أو اضغط لاختيارها</span>
+            <small>أول صورة بتصير الغلاف تلقائيًا، وبتقدر تغيّرها.</small>
+          </label>
+
+          <div class="admin-upload-meta">
+            <span id="uploadCount">0 صور</span>
+            <span>اسحب الصور لتغيير ترتيبها</span>
+          </div>
+
+          <div class="admin-image-sort" id="adminImageSort"></div>
+        </div>
+      </div>
+
+      <div class="admin-modal-actions">
+        <button type="button" class="admin-secondary" data-close-project>إلغاء</button>
+        <button type="submit" class="admin-primary">حفظ المشروع</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="admin-toast-v1" id="adminToastV1"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/data.js"></script>
+<script>
+(() => {
+  const SUPABASE_URL = "https://ldheoqivshttqgaoaviu.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_PKKARvtb2-sOMpe1Tv53_w_7kT5wMct";
+  const BUCKET = "portfolio-images";
+
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  const $ = (s,p=document) => p.querySelector(s);
+  const $$ = (s,p=document) => [...p.querySelectorAll(s)];
+
+  let projects = [];
+  let activeFilter = "all";
+  let searchTerm = "";
+  let files = []; // {id, src, name, file|null}
+  let coverIndex = 0;
+
+  const loginScreen = $("#loginScreen");
+  const loginForm = $("#loginForm");
+  const loginError = $("#loginError");
+  const loginSubmit = $("#loginSubmit");
+  const adminApp = $("#adminApp");
+  const modal = $("#projectCreator");
+  const form = $("#projectCreatorForm");
+  const fileInput = $("#adminProjectFiles");
+  const drop = $("#adminDropzone");
+  const sort = $("#adminImageSort");
+
+  const makeId = () => (crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36).slice(2)+Date.now()));
+  const esc = (v="") => String(v).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+  const safeFileName = (name="image") => name
+    .normalize("NFKD")
+    .replace(/[^\w.\-]+/g,"-")
+    .replace(/-+/g,"-")
+    .replace(/^-|-$/g,"") || "image";
+
+  function toast(msg, isError=false){
+    const t=$("#adminToastV1");
+    t.textContent=msg;
+    t.style.background=isError ? "#ff4d55" : "#fff";
+    t.style.color=isError ? "#fff" : "#111";
+    t.classList.add("show");
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer=setTimeout(()=>t.classList.remove("show"),2600);
+  }
+
+  function showLogin(){
+    loginScreen.style.display="grid";
+    adminApp.style.display="none";
+  }
+
+  async function showAdmin(){
+    loginScreen.style.display="none";
+    adminApp.style.display="grid";
+    await loadProjects();
+  }
+
+  async function boot(){
+    const { data:{ session } } = await sb.auth.getSession();
+    if(session) await showAdmin();
+    else showLogin();
+  }
+
+  loginForm.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    loginError.textContent="";
+    loginSubmit.disabled=true;
+    loginSubmit.textContent="جارٍ الدخول...";
+    const email=$("#loginEmail").value.trim();
+    const password=$("#loginPassword").value;
+
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+
+    loginSubmit.disabled=false;
+    loginSubmit.textContent="دخول";
+
+    if(error){
+      loginError.textContent = "تعذر تسجيل الدخول: " + error.message;
+      return;
+    }
+    await showAdmin();
+  });
+
+  $("#logoutBtn")?.addEventListener("click", async ()=>{
+    await sb.auth.signOut();
+    showLogin();
+  });
+
+  sb.auth.onAuthStateChange((_event, session)=>{
+    if(!session && adminApp.style.display!=="none") showLogin();
+  });
+
+  // Tabs
+  $$(".admin-tab").forEach(btn=>btn.addEventListener("click",()=>{
+    $$(".admin-tab").forEach(x=>x.classList.remove("active"));
+    $$(".admin-screen").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    $("#"+btn.dataset.panel)?.classList.add("active");
+    $(".admin-side")?.classList.remove("mobile-open");
+  }));
+  $("#adminMobileMenu")?.addEventListener("click",()=>$(".admin-side")?.classList.toggle("mobile-open"));
+
+  function typeKey(p){
+    if(p.kind==="branding") return "branding";
+    if(p.kind==="ads" || p.kind==="advertising") return "ads";
+    return "carousel";
+  }
+  function typeLabel(p){
+    return ({branding:"هوية بصرية", carousel:"كاروسيل", ads:"إعلان"})[typeKey(p)];
+  }
+
+  async function loadProjects(){
+    const grid=$("#adminProjectGrid");
+    if(grid) grid.innerHTML='<div style="color:#666;font-size:12px;padding:20px">جارٍ تحميل المشاريع...</div>';
+
+    const { data, error } = await sb
+      .from("projects")
+      .select("*")
+      .order("sort_order", { ascending:true })
+      .order("created_at", { ascending:false });
+
+    if(error){
+      toast("فشل تحميل المشاريع: "+error.message,true);
+      projects=[];
+    } else {
+      projects=data||[];
+    }
+    renderProjects();
+    updateLegacyImportButton();
+  }
+
+  function legacyProjects(){
+    try{
+      return Array.isArray(DEFAULT_CMS_DATA?.projects) ? DEFAULT_CMS_DATA.projects : [];
+    }catch{ return []; }
+  }
+
+  function missingLegacyProjects(){
+    const remoteKeys=new Set();
+    projects.forEach(p=>{
+      if(p.slug) remoteKeys.add(String(p.slug));
+      if(p.id) remoteKeys.add(String(p.id));
+    });
+    return legacyProjects().filter(p=>!remoteKeys.has(String(p.id)));
+  }
+
+  function updateLegacyImportButton(){
+    const btn=$("#importLegacyProjects");
+    if(!btn) return;
+    const missing=missingLegacyProjects();
+    btn.style.display=missing.length ? "inline-flex" : "none";
+    btn.textContent=missing.length ? `استيراد المشاريع القديمة (${missing.length})` : "تم استيراد المشاريع القديمة";
+  }
+
+  async function importLegacyProjects(){
+    const btn=$("#importLegacyProjects");
+    const missing=missingLegacyProjects();
+    if(!missing.length){ toast("كل المشاريع القديمة موجودة بالفعل"); return; }
+    if(!confirm(`سيتم إضافة ${missing.length} مشاريع قديمة إلى Supabase. متابعة؟`)) return;
+
+    btn.disabled=true;
+    const oldText=btn.textContent;
+    btn.textContent="جارٍ الاستيراد...";
+    try{
+      const rows=missing.map((p,index)=>({
+        id:crypto.randomUUID(),
+        slug:String(p.id),
+        title:p.title||"مشروع بدون عنوان",
+        kind:(p.type==="branding"||p.section==="branding") ? "branding" : ((p.workType||p.category||"").includes("إعلان") ? "ads" : "carousel"),
+        year:String(p.year||""),
+        short:p.short||p.intro||"",
+        services:p.services||p.role||"",
+        cover_url:p.cover||(Array.isArray(p.images)?p.images[0]:"")||"",
+        images:Array.isArray(p.images)?p.images:[],
+        published:p.published!==false,
+        sort_order:Number(p.order ?? (projects.length+index+1)),
+        updated_at:new Date().toISOString()
+      }));
+      const {error}=await sb.from("projects").insert(rows);
+      if(error) throw error;
+      await loadProjects();
+      toast(`تم استيراد ${rows.length} مشاريع إلى لوحة الإدارة`);
+    }catch(err){
+      console.error(err);
+      toast("فشل الاستيراد: "+(err?.message||err),true);
+      btn.textContent=oldText;
+    }finally{
+      btn.disabled=false;
+      updateLegacyImportButton();
+    }
+  }
+
+  $("#importLegacyProjects")?.addEventListener("click",importLegacyProjects);
+
+  function renderStats(){
+    $("#statAll").textContent=projects.length;
+    $("#statBranding").textContent=projects.filter(p=>typeKey(p)==="branding").length;
+    $("#statCarousel").textContent=projects.filter(p=>typeKey(p)==="carousel").length;
+    $("#statAds").textContent=projects.filter(p=>typeKey(p)==="ads").length;
+  }
+
+  function renderProjects(){
+    renderStats();
+    const grid=$("#adminProjectGrid");
+    let list=[...projects];
+
+    if(activeFilter!=="all") list=list.filter(p=>typeKey(p)===activeFilter);
+    if(searchTerm) list=list.filter(p=>(p.title||"").toLowerCase().includes(searchTerm));
+
+    grid.innerHTML=list.map(p=>`
+      <article class="admin-project-card">
+        <div class="admin-project-cover">
+          ${p.cover_url ? `<img src="${esc(p.cover_url)}" alt="">` : ""}
+          <span class="admin-project-badge">${typeLabel(p)}</span>
+        </div>
+        <div class="admin-project-info">
+          <h3>${esc(p.title||"بدون اسم")}</h3>
+          <p>${esc(p.year||"")} ${p.published===false ? "— مخفي" : "— منشور"}</p>
+          <div class="admin-project-actions">
+            <button data-edit="${p.id}">تعديل</button>
+            <button class="delete" data-delete="${p.id}">حذف</button>
+          </div>
+        </div>
+      </article>`).join("");
+
+    $("#adminEmpty").hidden=list.length!==0;
+    $$("[data-edit]").forEach(b=>b.onclick=()=>openEditor(b.dataset.edit));
+    $$("[data-delete]").forEach(b=>b.onclick=()=>deleteProject(b.dataset.delete));
+  }
+
+  $("#projectSearch")?.addEventListener("input",(e)=>{
+    searchTerm=e.target.value.trim().toLowerCase();
+    renderProjects();
+  });
+
+  $$("[data-filter]",$("#projectFilters")).forEach(btn=>btn.onclick=()=>{
+    activeFilter=btn.dataset.filter;
+    $$("[data-filter]",$("#projectFilters")).forEach(x=>x.classList.toggle("active",x===btn));
+    renderProjects();
+  });
+
+  // Image upload previews
+  async function ingest(fileList){
+    for(const file of [...fileList]){
+      if(!file.type.startsWith("image/")) continue;
+      files.push({
+        id:makeId(),
+        src:URL.createObjectURL(file),
+        name:file.name,
+        file
+      });
+    }
+    if(files.length && coverIndex>=files.length) coverIndex=0;
+    renderImageSort();
+    fileInput.value="";
+  }
+
+  function renderImageSort(){
+    $("#uploadCount").textContent=`${files.length} صور`;
+    sort.innerHTML=files.map((it,i)=>`
+      <div class="admin-sort-item ${i===coverIndex?"cover":""}" draggable="true" data-index="${i}">
+        <img src="${esc(it.src)}" alt="">
+        ${i===coverIndex?'<span class="admin-cover-label">الغلاف</span>':""}
+        <div class="admin-sort-tools">
+          <button type="button" data-cover="${i}">غلاف</button>
+          <button type="button" data-remove="${i}">حذف</button>
+        </div>
+      </div>`).join("");
+
+    $$("[data-cover]",sort).forEach(b=>b.onclick=()=>{
+      coverIndex=Number(b.dataset.cover);
+      renderImageSort();
+    });
+
+    $$("[data-remove]",sort).forEach(b=>b.onclick=()=>{
+      const i=Number(b.dataset.remove);
+      const removed=files[i];
+      if(removed?.file && removed.src.startsWith("blob:")) URL.revokeObjectURL(removed.src);
+      files.splice(i,1);
+      if(coverIndex===i) coverIndex=0;
+      else if(coverIndex>i) coverIndex--;
+      renderImageSort();
+    });
+
+    let dragFrom=null;
+    $$(".admin-sort-item",sort).forEach(item=>{
+      item.ondragstart=()=>{dragFrom=Number(item.dataset.index);item.classList.add("dragging")};
+      item.ondragend=()=>item.classList.remove("dragging");
+      item.ondragover=e=>e.preventDefault();
+      item.ondrop=e=>{
+        e.preventDefault();
+        const to=Number(item.dataset.index);
+        if(dragFrom===null || dragFrom===to) return;
+        const coverId=files[coverIndex]?.id;
+        const [moved]=files.splice(dragFrom,1);
+        files.splice(to,0,moved);
+        coverIndex=Math.max(0,files.findIndex(x=>x.id===coverId));
+        renderImageSort();
+      };
+    });
+  }
+
+  function resetCreator(){
+    form.reset();
+    form.elements.editingId.value="";
+    form.elements.year.value=new Date().getFullYear();
+    form.elements.published.checked=true;
+    files.forEach(x=>{ if(x.file && x.src.startsWith("blob:")) URL.revokeObjectURL(x.src); });
+    files=[];
+    coverIndex=0;
+    renderImageSort();
+    $("#projectModalTitle").textContent="إضافة مشروع.";
+  }
+
+  function openCreator(){
+    resetCreator();
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+  }
+
+  function closeCreator(){
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+  }
+
+  $("#openProjectCreator")?.addEventListener("click",openCreator);
+  $$("[data-close-project]").forEach(x=>x.onclick=closeCreator);
+  fileInput?.addEventListener("change",()=>ingest(fileInput.files));
+
+  ["dragenter","dragover"].forEach(ev=>drop?.addEventListener(ev,e=>{
+    e.preventDefault();
+    drop.classList.add("dragover");
+  }));
+  ["dragleave","drop"].forEach(ev=>drop?.addEventListener(ev,e=>{
+    e.preventDefault();
+    drop.classList.remove("dragover");
+  }));
+  drop?.addEventListener("drop",e=>ingest(e.dataTransfer.files));
+
+  async function uploadPendingImages(projectId){
+    const finalUrls=[];
+
+    for(let i=0;i<files.length;i++){
+      const item=files[i];
+
+      if(!item.file){
+        finalUrls.push(item.src);
+        continue;
+      }
+
+      const ext=(item.file.name.split(".").pop()||"jpg").toLowerCase();
+      const base=safeFileName(item.file.name.replace(/\.[^.]+$/,""));
+      const path=`${projectId}/${Date.now()}-${String(i+1).padStart(2,"0")}-${base}.${ext}`;
+
+      const { error:uploadError } = await sb.storage
+        .from(BUCKET)
+        .upload(path, item.file, {
+          cacheControl:"3600",
+          upsert:false,
+          contentType:item.file.type
+        });
+
+      if(uploadError) throw new Error(`رفع الصورة ${i+1} فشل: ${uploadError.message}`);
+
+      const { data:publicData } = sb.storage.from(BUCKET).getPublicUrl(path);
+      if(!publicData?.publicUrl) throw new Error(`تعذر إنشاء رابط للصورة ${i+1}`);
+
+      finalUrls.push(publicData.publicUrl);
+    }
+
+    return finalUrls;
+  }
+
+  form?.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+
+    if(!files.length){
+      toast("ارفع صورة واحدة على الأقل",true);
+      return;
+    }
+
+    const saveBtn=form.querySelector('button[type="submit"]');
+    const originalText=saveBtn.textContent;
+    saveBtn.disabled=true;
+    saveBtn.textContent="جارٍ الحفظ...";
+
+    try{
+      const fd=new FormData(form);
+      const editingId=String(fd.get("editingId")||"").trim();
+      const projectId=editingId || crypto.randomUUID();
+      const kind=String(fd.get("kind")||"carousel");
+
+      const imageUrls=await uploadPendingImages(projectId);
+      const selectedCover=imageUrls[Math.min(coverIndex,imageUrls.length-1)] || imageUrls[0];
+
+      const payload={
+        title:String(fd.get("title")||"").trim(),
+        kind,
+        year:String(fd.get("year")||"").trim(),
+        short:String(fd.get("short")||"").trim(),
+        services:String(fd.get("services")||"").trim(),
+        cover_url:selectedCover,
+        images:imageUrls,
+        published:fd.get("published")==="on",
+        sort_order: editingId
+          ? (projects.find(p=>p.id===editingId)?.sort_order ?? 0)
+          : projects.length + 1,
+        updated_at:new Date().toISOString()
+      };
+
+      let result;
+      if(editingId){
+        result=await sb.from("projects").update(payload).eq("id",editingId).select().single();
+      }else{
+        result=await sb.from("projects").insert({ id:projectId, ...payload }).select().single();
+      }
+
+      if(result.error) throw result.error;
+
+      closeCreator();
+      await loadProjects();
+      toast(editingId ? "تم تعديل المشروع وحفظه" : "تم حفظ المشروع ونشره");
+    }catch(err){
+      console.error(err);
+      toast("ما انحفظ المشروع: "+(err?.message||err),true);
+    }finally{
+      saveBtn.disabled=false;
+      saveBtn.textContent=originalText;
+    }
+  });
+
+  function openEditor(id){
+    const p=projects.find(x=>x.id===id);
+    if(!p) return;
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    $("#projectModalTitle").textContent="تعديل المشروع.";
+
+    form.elements.editingId.value=p.id;
+    form.elements.title.value=p.title||"";
+    form.elements.year.value=p.year||"";
+    form.elements.short.value=p.short||"";
+    form.elements.services.value=p.services||"";
+    form.elements.published.checked=p.published!==false;
+    form.elements.kind.value=typeKey(p);
+
+    files=(Array.isArray(p.images)?p.images:[])
+      .filter(Boolean)
+      .map((src,i)=>({ id:makeId(), src, name:`image-${i+1}`, file:null }));
+
+    if(!files.length && p.cover_url){
+      files=[{ id:makeId(), src:p.cover_url, name:"cover", file:null }];
+    }
+
+    coverIndex=Math.max(0,files.findIndex(x=>x.src===p.cover_url));
+    renderImageSort();
+  }
+
+  function storagePathFromUrl(url){
+    try{
+      const marker=`/storage/v1/object/public/${BUCKET}/`;
+      const idx=url.indexOf(marker);
+      if(idx===-1) return null;
+      return decodeURIComponent(url.slice(idx+marker.length));
+    }catch{return null}
+  }
+
+  async function deleteProject(id){
+    const p=projects.find(x=>x.id===id);
+    if(!p) return;
+    if(!confirm(`حذف "${p.title||"المشروع"}"؟`)) return;
+
+    try{
+      const { error }=await sb.from("projects").delete().eq("id",id);
+      if(error) throw error;
+
+      const paths=(Array.isArray(p.images)?p.images:[])
+        .map(storagePathFromUrl)
+        .filter(Boolean);
+      if(paths.length) await sb.storage.from(BUCKET).remove(paths);
+
+      await loadProjects();
+      toast("تم حذف المشروع");
+    }catch(err){
+      toast("تعذر حذف المشروع: "+(err?.message||err),true);
+    }
+  }
+
+  // Site content + SEO are stored in Supabase and shared with the live site.
+  const SITE_DEFAULTS = {
+    brandName:"إلهام الحسين", role:"مصمم بصري ومدير فني",
+    hero1:"أصنع", hero2:"فكرةً", hero3:"تُرى.",
+    heroDescription:"أحوّل الفكرة إلى حضور بصري واضح؛ هوية تُعرف، ومحتوى يمسك الانتباه، وتصميم له سبب قبل ما يكون له شكل.",
+    brandingTitle:"هويات بصرية\nتعيش أبعد من الشعار.",
+    brandingText:"أبني نظاماً بصرياً متماسكاً يبدأ من الفكرة ويظل واضحاً في كل نقطة يلتقي فيها الناس مع العلامة.",
+    carouselTitle:"أعمال بصرية",
+    carouselText:"كاروسيلات وإعلانات؛ أغلفة واضحة، وكل مشروع يفتح على تفاصيله كاملة.",
+    aboutTitle:"التصميم عندي\nقرار قبل ما يكون شكل.",
+    aboutText:"أبدأ بالسؤال: شو لازم يوصل أولاً؟ بعدها أبني التكوين والخط واللون والصورة والحركة حول الفكرة، حتى يطلع العمل واضحاً ومتماسكاً وله شخصية.",
+    contactTitle:"عندك فكرة\nبدها حضور؟",
+    contactText:"احكيلي عن المشروع. إذا الفكرة تستحق الانتباه، بنبني لها حضور بصري يخلي الناس توقف عندها وتتذكرها.",
+    contactEmail:"hello@example.com",
+    seoTitle:"إلهام الحسين | مصمم بصري ومدير فني",
+    seoDescription:"معرض أعمال مصمم بصري ومدير فني متخصص في الهويات البصرية، التصميم التحريري، الإعلانات، الدمج البصري، الكاروسيلات ومحتوى السوشال ميديا.",
+    siteUrl:"", gaMeasurementId:""
+  };
+  let siteState={...SITE_DEFAULTS};
+
+  function fillSiteForms(){
+    [$("#contentForm"),$("#seoForm")].filter(Boolean).forEach(f=>{
+      [...f.elements].forEach(el=>{if(el.name && Object.prototype.hasOwnProperty.call(siteState,el.name)) el.value=siteState[el.name]??"";});
+    });
+  }
+
+  async function loadSiteSettings(){
+    const {data,error}=await sb.from("site_settings").select("content").eq("id",1).maybeSingle();
+    if(error){
+      console.warn("site_settings load failed",error);
+      fillSiteForms();
+      return;
+    }
+    if(data?.content && typeof data.content==="object") siteState={...SITE_DEFAULTS,...data.content};
+    fillSiteForms();
+  }
+
+  async function saveSiteSettings(){
+    const {error}=await sb.from("site_settings").upsert({id:1,content:siteState,updated_at:new Date().toISOString()},{onConflict:"id"});
+    if(error) throw error;
+  }
+
+  const contentForm=$("#contentForm");
+  if(contentForm){
+    contentForm.addEventListener("submit",async e=>{
+      e.preventDefault();
+      const btn=contentForm.querySelector('button[type="submit"]');
+      const old=btn.textContent; btn.disabled=true; btn.textContent="جارٍ الحفظ...";
+      try{
+        [...contentForm.elements].forEach(el=>{if(el.name)siteState[el.name]=el.value});
+        await saveSiteSettings();
+        toast("تم حفظ النصوص على الموقع");
+      }catch(err){toast("فشل حفظ النصوص: "+(err?.message||err),true);}
+      finally{btn.disabled=false;btn.textContent=old;}
+    });
+  }
+
+  const seoForm=$("#seoForm");
+  if(seoForm){
+    seoForm.addEventListener("submit",async e=>{
+      e.preventDefault();
+      const btn=seoForm.querySelector('button[type="submit"]');
+      const old=btn.textContent; btn.disabled=true; btn.textContent="جارٍ الحفظ...";
+      try{
+        [...seoForm.elements].forEach(el=>{if(el.name)siteState[el.name]=el.value});
+        await saveSiteSettings();
+        toast("تم حفظ إعدادات SEO على الموقع");
+      }catch(err){toast("فشل حفظ SEO: "+(err?.message||err),true);}
+      finally{btn.disabled=false;btn.textContent=old;}
+    });
+  }
+
+  // Load forms once the authenticated admin boots.
+  const originalShowAdmin=showAdmin;
+  showAdmin=async function(){await originalShowAdmin();await loadSiteSettings();};
+
+  boot();
+})();
+</script>
+</body>
+</html>

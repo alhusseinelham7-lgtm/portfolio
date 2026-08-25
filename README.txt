@@ -1,22 +1,33 @@
-PORTFOLIO FINAL COMPLETE
-========================
-شغّل index.html عبر Live Server.
+PORTFOLIO FINAL V4
+===================
 
-الصفحات:
-- index.html
-- branding.html
-- carousels.html
-- project.html?id=PROJECT_ID  ← صفحة ديناميكية لكل مشروع
-- admin.html
+التعديلات:
+1) مسافة أكبر بين أصنع / فكرةً / تُرى.
+2) Admin responsive للهاتف والتابلت.
+3) إضافة مشروع: اسم + نوع + صور + نشر.
+4) عند تفعيل Supabase، الصور والمشاريع تنشر مباشرة للجميع بدون تعديل الكود.
+5) تحسين أداء الكاروسيل على اللابتوب/Safari:
+   - إلغاء wheel interception.
+   - native horizontal scrolling.
+   - drag بالماوس.
+   - إزالة blur/filter والحركات المستمرة.
+   - custom cursor لا يعمل animation loop دائم.
+6) نصوص رئيسية مصقولة وأكثر احترافية وقرباً من القارئ.
 
-لوحة الإدارة:
-- تعدّل نصوص الرئيسية
-- تضيف/تحذف/تعدل المشاريع
-- تعدّل وصف المشروع وصوره وأقسامه
-- لا تحتاج إنشاء HTML جديد عند إضافة مشروع
+تشغيل عادي:
+افتح index.html عبر Live Server.
 
-الصور:
-ضع أي صور جديدة داخل assets/images/ ثم اكتب مسارها من لوحة الإدارة.
+لتفعيل CMS الحقيقي (مرة واحدة):
+1. أنشئ مشروع Supabase.
+2. افتح SQL Editor وشغّل SUPABASE-SETUP.sql.
+3. من Authentication أنشئ مستخدم الإدارة بإيميل وكلمة مرور، وعطّل التسجيل العام إن لم تكن تحتاجه.
+4. من Project Settings / API انسخ Project URL و anon key.
+5. افتح assets/js/supabase-config.js:
+   enabled: true
+   url: "..."
+   anonKey: "..."
+6. ارفع النسخة إلى GitHub Pages.
+بعدها: افتح admin.html، سجّل الدخول، وارفع المشاريع مباشرة.
 
-ملاحظة:
-الإدارة تحفظ البيانات في LocalStorage داخل المتصفح. للنشر من أكثر من جهاز أو رفع الصور مباشرة من الإدارة نحتاج لاحقاً Backend/CMS حقيقي مثل Supabase.
+بدون Supabase:
+الإدارة تعمل بوضع محلي للتجربة فقط، والتعديلات تبقى في نفس المتصفح ولا تظهر للزوار.
