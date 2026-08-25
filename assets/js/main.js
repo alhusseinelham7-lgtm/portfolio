@@ -70,7 +70,6 @@ if(strip){
   const arr=visibleProjects().filter(p=>p.type==="carousel");
   strip.innerHTML=arr.map((p,i)=>`<a class="carousel-card" href="${projectURL(p)}" data-transition data-hover-label="افتح الكاروسيل">
     <img src="${p.cover}" alt="${p.title}" loading="${i<2?'eager':'lazy'}" decoding="async"><div class="carousel-card-info"><h3>${p.title}</h3><small>${p.category} — ${p.year}</small></div></a>`).join("");
-  if(!mobile)strip.addEventListener("wheel",e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();strip.scrollLeft+=e.deltaY}},{passive:false});
 }
 // list pages
 function row(p,i){return `<a class="archive-row" href="${projectURL(p)}" data-transition data-preview="${p.cover}" data-hover-label="عرض">
@@ -90,7 +89,8 @@ if(detail){
     document.title=`${p.title} — معرض الأعمال`;
     bind("[data-project-eyebrow]",p.eyebrow||p.category);bind("[data-project-year]",p.year);bind("[data-project-title]",p.title);
     bind("[data-project-intro]",p.intro||p.short);bind("[data-project-role]",p.role);bind("[data-project-services]",p.services);
-    const cover=$("[data-project-cover]");if(cover){cover.src=p.cover;cover.alt=p.title}
+    const cover=$("[data-project-cover]"),coverWrap=cover?.closest(".project-cover");
+    if(p.type==="carousel"){coverWrap?.remove()}else if(cover){cover.src=p.cover;cover.alt=p.title}
     const sections=$("[data-project-sections]");
     if(sections)sections.innerHTML=(p.sections||[]).map(s=>`<section class="project-section"><div class="container project-copy reveal"><div class="label">${s.label||""}</div><div><h2>${s.title||""}</h2><p>${s.text||""}</p></div></div></section>`).join("");
     const gallery=$("[data-project-gallery]"), viewer=$("[data-slide-viewer]");
@@ -99,7 +99,7 @@ if(detail){
       if(gallery)gallery.innerHTML=(p.images||[]).map((im,i)=>`<img src="${im}" alt="${p.title} ${i+1}" loading="lazy" decoding="async">`).join("");
     }else{
       if(gallery)gallery.remove();
-      if(viewer){const track=$(".slide-track",viewer);track.innerHTML=(p.images||[]).map((im,i)=>`<div class="slide"><img src="${im}" alt="${p.title} - شريحة ${i+1}" loading="${i<2?'eager':'lazy'}" decoding="async"></div>`).join("");if(!mobile)track.addEventListener("wheel",e=>{e.preventDefault();track.scrollLeft+=e.deltaY},{passive:false})}
+      if(viewer){const track=$(".slide-track",viewer);track.innerHTML=(p.images||[]).map((im,i)=>`<div class="slide"><img src="${im}" alt="${p.title} - شريحة ${i+1}" loading="${i<3?'eager':'lazy'}" decoding="async"></div>`).join("")}
     }
     const all=visibleProjects(), idx=all.findIndex(x=>x.id===p.id), next=all[(idx+1)%all.length], na=$("[data-next-project]");
     if(na){na.textContent=`التالي: ${next.title} ←`;na.href=projectURL(next)}
