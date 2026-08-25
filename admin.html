@@ -526,12 +526,22 @@
   }
 
   function missingLegacyProjects(){
+    const normalizeTitle=value=>String(value||"")
+      .normalize("NFKC")
+      .replace(/[\u064B-\u065F\u0670\u0640]/g,"")
+      .replace(/[^\p{L}\p{N}]+/gu,"")
+      .toLowerCase();
     const remoteKeys=new Set();
+    const remoteTitles=new Set();
     projects.forEach(p=>{
       if(p.slug) remoteKeys.add(String(p.slug));
       if(p.id) remoteKeys.add(String(p.id));
+      if(p.title) remoteTitles.add(normalizeTitle(p.title));
     });
-    return legacyProjects().filter(p=>!remoteKeys.has(String(p.id)));
+    return legacyProjects().filter(p=>
+      !remoteKeys.has(String(p.id)) &&
+      !remoteTitles.has(normalizeTitle(p.title))
+    );
   }
 
   function updateLegacyImportButton(){
