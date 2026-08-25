@@ -389,3 +389,6 @@ html.custom-pointer,html.custom-pointer *{cursor:none!important}
 /* Compact, intentional section rhythm */
 .hero,.project-hero,.project-section{margin-bottom:0}
 .section-title,.project-title,.hero-title{margin-bottom:0}
+
+/* Keep the admin entry private; access remains available by direct URL. */
+.nav .admin-link{display:none!important}
